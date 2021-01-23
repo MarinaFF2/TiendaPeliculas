@@ -49,9 +49,6 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
         jPanelInferior = new javax.swing.JPanel();
         jScrollPaneTable = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
-        jButtonBuscar = new javax.swing.JButton();
-        jComboBoxBuscar = new javax.swing.JComboBox<>();
-        jTextFieldBuscar = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jPanelSuperior = new javax.swing.JPanel();
         jButtonFoto = new javax.swing.JButton();
@@ -105,45 +102,18 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
         });
         jScrollPaneTable.setViewportView(jTable);
 
-        jButtonBuscar.setText("Buscar");
-        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBuscarActionPerformed(evt);
-            }
-        });
-
-        jComboBoxBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Titulo", "Director", "Año", "Generos", "Rango de edad", "Precio" }));
-        jComboBoxBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxBuscarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanelInferiorLayout = new javax.swing.GroupLayout(jPanelInferior);
         jPanelInferior.setLayout(jPanelInferiorLayout);
         jPanelInferiorLayout.setHorizontalGroup(
             jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPaneTable)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInferiorLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldBuscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonBuscar)
-                .addGap(17, 17, 17))
+            .addComponent(jScrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanelInferiorLayout.setVerticalGroup(
             jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelInferiorLayout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addGroup(jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(33, 33, 33)
                 .addComponent(jScrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
         );
 
@@ -312,10 +282,6 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBoxBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxBuscarActionPerformed
-
     private void jMenuItemInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInicioActionPerformed
         dispose();
 
@@ -351,10 +317,6 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
         vp.setLocationRelativeTo(null);
         vp.setVisible(true);
     }//GEN-LAST:event_jMenuPeliculasMenuSelected
-
-    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-        buscarPelis();
-    }//GEN-LAST:event_jButtonBuscarActionPerformed
     private void crearTabla() {
         //instanciamos el modelo de tabla creado
         this.tablaModel = new TablaGestionPeliculasModel();
@@ -374,74 +336,9 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
         conectBD.closeBD();
     }
 
-    private void buscarPelis() {
-        switch ((String) jComboBoxBuscar.getSelectedItem()) {
-            case "Titulo":
-                if (jTextFieldBuscar.getText() != null) {
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarTitulo(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Generos":
-                if (jTextFieldBuscar.getText() != null) {
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarGenero(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Rango de edad":
-                if (jTextFieldBuscar.getText() != null) {
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarRangoEdad(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Precio":
-                if (jTextFieldBuscar.getText() != null) {
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarPrecio(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Director":
-                if (jTextFieldBuscar.getText() != null) {
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarDirector(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Año":
-                if (jTextFieldBuscar.getText() != null) {
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarAnio(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-        }
-    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonFoto;
-    private javax.swing.JComboBox<String> jComboBoxBuscar;
     private javax.swing.JLabel jLabelAnio;
     private javax.swing.JLabel jLabelDirector;
     private javax.swing.JLabel jLabelGeneros;
@@ -464,7 +361,6 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
     private javax.swing.JTable jTable;
     private javax.swing.JTextArea jTextAreaSinopsis;
     private javax.swing.JTextField jTextFieldAnio;
-    private javax.swing.JTextField jTextFieldBuscar;
     private javax.swing.JTextField jTextFieldDirector;
     private javax.swing.JTextField jTextFieldGeneros;
     private javax.swing.JTextField jTextFieldPrecio;
