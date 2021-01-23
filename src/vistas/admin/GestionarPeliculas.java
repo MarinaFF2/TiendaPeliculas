@@ -87,9 +87,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
         jButtonExaminar = new javax.swing.JButton();
         jLabelFotoSeleccionada = new javax.swing.JLabel();
         jPanelInferior = new javax.swing.JPanel();
-        jButtonBuscar = new javax.swing.JButton();
-        jComboBoxBuscar = new javax.swing.JComboBox<>();
-        jTextFieldBuscar = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
@@ -328,15 +325,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
                 .addGap(38, 38, 38))
         );
 
-        jButtonBuscar.setText("Buscar");
-        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBuscarActionPerformed(evt);
-            }
-        });
-
-        jComboBoxBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Titulo", "Director", "Año", "Generos", "Rango de edad", "Precio" }));
-
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -356,14 +344,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
         jPanelInferior.setLayout(jPanelInferiorLayout);
         jPanelInferiorLayout.setHorizontalGroup(
             jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInferiorLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldBuscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonBuscar)
-                .addGap(17, 17, 17))
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
@@ -371,12 +351,7 @@ public class GestionarPeliculas extends javax.swing.JFrame {
             jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelInferiorLayout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addGroup(jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(33, 33, 33)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
         );
 
@@ -511,10 +486,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
     private void jButtonExaminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExaminarActionPerformed
         examinarFoto();
     }//GEN-LAST:event_jButtonExaminarActionPerformed
-
-    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-        buscarPelis();
-    }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
         int fila = jTable.getSelectedRow();
@@ -774,77 +745,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
 //        }
     }
 
-    private void buscarPelis() {
-        switch ((String) jComboBoxBuscar.getSelectedItem()) {
-            case "Titulo":
-                if (jTextFieldBuscar.getText() != null) {
-                    declararModelo();
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarTitulo(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Generos":
-                if (jTextFieldBuscar.getText() != null) {
-                    declararModelo();
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarGenero(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Rango de edad":
-                if (jTextFieldBuscar.getText() != null) {
-                    declararModelo();
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarRangoEdad(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Precio":
-                if (jTextFieldBuscar.getText() != null) {
-                    declararModelo();
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarPrecio(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Director":
-                if (jTextFieldBuscar.getText() != null) {
-                    declararModelo();
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarDirector(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            case "Año":
-                if (jTextFieldBuscar.getText() != null) {
-                    declararModelo();
-                    conectBD.openBD();
-                    //añadimos los campos de la tabla
-                    this.tablaModel.setFila(conectBD.buscarAnio(jTextFieldBuscar.getText()));
-                    conectBD.closeBD();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Introduce lo que quieres buscar", "Error buscar", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-        }
-    }
-
     private void rellenarCheckBoxGenero(String generos) {
         String[] parts = generos.split(",");
         for (String part : parts) {
@@ -902,7 +802,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAniadir;
-    private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonExaminar;
     private javax.swing.JButton jButtonFoto;
@@ -918,7 +817,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBoxGeneroHistorica;
     private javax.swing.JCheckBox jCheckBoxGeneroThriller;
     private javax.swing.JCheckBox jCheckBoxRomantica;
-    private javax.swing.JComboBox<String> jComboBoxBuscar;
     private javax.swing.JComboBox<String> jComboBoxRangoEdad;
     private javax.swing.JLabel jLabelAnio;
     private javax.swing.JLabel jLabelDirector;
@@ -946,7 +844,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
     private javax.swing.JTable jTable;
     private javax.swing.JTextArea jTextAreaSinopsis;
     private javax.swing.JTextField jTextFieldAnio;
-    private javax.swing.JTextField jTextFieldBuscar;
     private javax.swing.JTextField jTextFieldDirector;
     private javax.swing.JTextField jTextFieldPrecio;
     private javax.swing.JTextField jTextFieldTitulo;
