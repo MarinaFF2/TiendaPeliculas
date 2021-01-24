@@ -129,7 +129,7 @@ public class ConectorBD {
             st.close();
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error No hay peli con esa característica", "Error buscar", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error No hay pelicula", "Error buscar", JOptionPane.ERROR_MESSAGE);
         }
         return listaPelis;
     }
@@ -261,6 +261,39 @@ public class ConectorBD {
             JOptionPane.showMessageDialog(null, "Error al actualizar", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    public ArrayList<Usuarios> selectUsuarios() {
+        ArrayList<Usuarios> listaUsuarios = new ArrayList<Usuarios>();
+        //como se reutiliza la variable la ponemos a null
+        usuarios = null;
+        usuarios = new Usuarios();
+        //consulta que vamos a hacer
+        String sql = "SELECT * FROM peliculas;";
+
+        try {
+            Statement st = con.createStatement();
+            //execute the sentence, obtaining a relset
+            ResultSet resul = st.executeQuery(sql);
+            //process the resulset with the methos resul.next()
+            if (resul.next() == false) {
+                JOptionPane.showMessageDialog(null, "No hay usuarios", "No se encuentra", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                while (resul.next()) {
+                    usuarios = new Usuarios(resul.getInt(1), resul.getString(2), resul.getString(3), resul.getString(4), resul.getString(5), resul.getString(6), resul.getInt(7), resul.getInt(8));
+                    listaUsuarios.add(usuarios);
+                }
+            }
+
+            resul.close();
+            st.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error No hay usuarios", "Error buscar", JOptionPane.ERROR_MESSAGE);
+        }
+        return listaUsuarios;
+    }
+
+   
     /*
     para hacer el historico
     
