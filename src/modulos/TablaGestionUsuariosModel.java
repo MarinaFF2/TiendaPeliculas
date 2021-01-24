@@ -5,12 +5,13 @@
  */
 package modulos;
 
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Clase TablaPuntuacionModel
- * Hereda de DefaultTableModel
+ * Clase TablaPuntuacionModel Hereda de DefaultTableModel
+ *
  * @see TablaPuntuacionModel
  * @author ff_ma
  */
@@ -19,47 +20,54 @@ public class TablaGestionUsuariosModel extends DefaultTableModel {
     /**
      * Constructor para poner los nombres las columnas de la tabla
      */
-    public TablaGestionUsuariosModel() {       
+    public TablaGestionUsuariosModel() {
+        this.addColumn("Id");
         this.addColumn("Foto");
+        this.addColumn("Correo");
         this.addColumn("Nombre");
         this.addColumn("Apellidos");
-        this.addColumn("Correo");
-        this.addColumn("Rol");
         this.addColumn("Activo");
+        this.addColumn("Rol");
     }
 
     /**
      * Constructor para reemplazar los identificadores de columna en el modelo.
-     * @param columnas 
+     *
+     * @param columnas
      */
     public TablaGestionUsuariosModel(String[] columnas) {
         //Si nº identificadores > el nº actual de columnas, 
-            //se agregan nuevas columnas al final de cada fila del modelo. 
+        //se agregan nuevas columnas al final de cada fila del modelo. 
         //Si nº identificadores nuevos < el nº actual de columnas, 
-            //se descartan todas las columnas adicionales al final de una fila.
+        //se descartan todas las columnas adicionales al final de una fila.
         this.setColumnIdentifiers(columnas);
     }
 
     /**
      * Método para añadir una fila
-     * @param p1 
+     *
+     * @param p1
      */
-    public void setFila(Usuarios u1) {
-        Vector v = new Vector();
-        v.add(u1.getFoto());
-        v.add(u1.getNombre());
-        v.add(u1.getApellido());
-        v.add(u1.getCorreo());
-        v.add(u1.getIdRol());
-        v.add(u1.getActivo());
-        this.addRow(v);
+    public void setFila(ArrayList<Usuarios> listaUsuarios) {
+        for (Usuarios u1 : listaUsuarios) {
+            Vector v = new Vector();
+            v.add(u1.getId_usuario());
+            v.add(u1.getFoto());
+            v.add(u1.getCorreo());
+            v.add(u1.getNombre());
+            v.add(u1.getApellido());
+            v.add(u1.getActivo());
+            v.add(u1.getIdRol());
+            this.addRow(v);
+        }
     }
 
     /**
      * Metodo para que saber si la celda es editable
+     *
      * @param row
      * @param column
-     * @return 
+     * @return
      */
     @Override
     public boolean isCellEditable(int row, int column) {
