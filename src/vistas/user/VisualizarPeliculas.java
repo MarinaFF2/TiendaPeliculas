@@ -6,6 +6,8 @@
 package vistas.user;
 
 import datos.ConectorBD;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import modulos.Peliculas;
@@ -34,7 +36,7 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
         peli = new Peliculas();
 
         //creamos la tabla con DefaultTableModel
-        crearTabla();
+        cargarTabla();
     }
 
     /**
@@ -98,6 +100,11 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClicked(evt);
             }
         });
         jScrollPaneTable.setViewportView(jTable);
@@ -317,7 +324,36 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
         vp.setLocationRelativeTo(null);
         vp.setVisible(true);
     }//GEN-LAST:event_jMenuPeliculasMenuSelected
-    private void crearTabla() {
+
+    private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
+        int fila = jTable.getSelectedRow();
+        if (fila != -1) {
+            rellenarFormulario(fila);
+        }
+    }//GEN-LAST:event_jTableMouseClicked
+    private void rellenarFormulario(int fila) {
+        peli = new Peliculas();
+        peli.setId_peli(Integer.parseInt(jTable.getValueAt(fila, 0).toString()));
+        peli.setCaratula(jTable.getValueAt(fila, 1).toString());
+        jButtonFoto.setIcon(new ImageIcon(new ImageIcon(System.getProperty("user.dir") + peli.getCaratula()).getImage().getScaledInstance(jButtonFoto.getWidth(), jButtonFoto.getHeight(), Image.SCALE_SMOOTH)));
+        jTextFieldTitulo.setText(jTable.getValueAt(fila, 2).toString());
+        jTextFieldDirector.setText(jTable.getValueAt(fila, 3).toString());
+        jTextFieldAnio.setText(jTable.getValueAt(fila, 4).toString());
+        jTextAreaSinopsis.setText(jTable.getValueAt(fila, 5).toString());
+        jTextFieldGeneros.setText(jTable.getValueAt(fila, 6).toString());
+        jTextFieldRangoEdad.setText(jTable.getValueAt(fila, 7).toString());
+        jTextFieldPrecio.setText(jTable.getValueAt(fila, 8).toString());
+    }
+    private void cargarTabla() {
+        declararModelo();
+
+        //añadimos el contenido
+        conectBD.openBD();
+        this.tablaModel.setFila(conectBD.selectPelis());
+        conectBD.closeBD();
+    }
+
+    private void declararModelo() {
         //instanciamos el modelo de tabla creado
         this.tablaModel = new TablaGestionPeliculasModel();
         //permitimos la seleccion de la fila de la tabla
@@ -329,14 +365,7 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
         jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //añadimos el modelo a la tabla
         this.jTable.setModel(tablaModel);
-
-        //añadimos los campos de la tabla
-        conectBD.openBD();
-        this.tablaModel.setFila(conectBD.selectPelis());
-        conectBD.closeBD();
     }
-
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonFoto;
     private javax.swing.JLabel jLabelAnio;
