@@ -85,6 +85,11 @@ public class Usuarios {
     /**
      * GETTERS && SETTERS
      */
+    
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+
     public int getId_usuario() {
         return id_usuario;
     }
