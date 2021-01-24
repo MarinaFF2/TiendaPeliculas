@@ -41,6 +41,11 @@ public class GestionarPeliculas extends javax.swing.JFrame {
 
         //creamos la tabla con DefaultTableModel
         cargarTabla();
+        
+        //se aplica los saltos de línea en el textarea automaticamente
+        jTextAreaSinopsis.setLineWrap(true); 
+        //Hace que los saltos de linea no corte las palabras
+        jTextAreaSinopsis.setWrapStyleWord(true);
     }
 
     /**
