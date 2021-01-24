@@ -50,9 +50,6 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         jPanelInferior = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
-        jButtonBuscar = new javax.swing.JButton();
-        jComboBoxBuscar = new javax.swing.JComboBox<>();
-        jTextFieldBuscar = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jPanelSuperior = new javax.swing.JPanel();
         jButtonFoto = new javax.swing.JButton();
@@ -88,40 +85,18 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         jTable.setModel(new TablaGestionUsuariosModel());
         jScrollPane1.setViewportView(jTable);
 
-        jButtonBuscar.setText("Buscar");
-
-        jComboBoxBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Correo", "Nombre", "Apellido", "Nombre y apellido", "Activo", "Sin activar", "Rol", " " }));
-        jComboBoxBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxBuscarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanelInferiorLayout = new javax.swing.GroupLayout(jPanelInferior);
         jPanelInferior.setLayout(jPanelInferiorLayout);
         jPanelInferiorLayout.setHorizontalGroup(
             jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInferiorLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldBuscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonBuscar)
-                .addGap(17, 17, 17))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanelInferiorLayout.setVerticalGroup(
             jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelInferiorLayout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addGroup(jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
         );
 
@@ -347,10 +322,6 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBoxBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxBuscarActionPerformed
-
     private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonModificarActionPerformed
@@ -442,14 +413,12 @@ public class GestionarUsuarios extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAniadir;
-    private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonExaminar;
     private javax.swing.JButton jButtonFoto;
     private javax.swing.JButton jButtonLimpiar;
     private javax.swing.JButton jButtonModificar;
     private javax.swing.JCheckBox jCheckBoxActivo;
-    private javax.swing.JComboBox<String> jComboBoxBuscar;
     private javax.swing.JComboBox<String> jComboBoxRol;
     private javax.swing.JLabel jLabelActivo;
     private javax.swing.JLabel jLabelApellido;
@@ -473,7 +442,6 @@ public class GestionarUsuarios extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable;
     private javax.swing.JTextField jTextFieldApellido;
-    private javax.swing.JTextField jTextFieldBuscar;
     private javax.swing.JTextField jTextFieldCorreo;
     private javax.swing.JTextField jTextFieldNombre;
     // End of variables declaration//GEN-END:variables
