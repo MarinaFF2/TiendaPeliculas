@@ -268,7 +268,7 @@ public class ConectorBD {
         usuarios = null;
         usuarios = new Usuarios();
         //consulta que vamos a hacer
-        String sql = "SELECT * FROM peliculas;";
+        String sql = "SELECT * FROM usuarios;";
 
         try {
             Statement st = con.createStatement();
