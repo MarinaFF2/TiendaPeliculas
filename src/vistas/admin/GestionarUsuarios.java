@@ -538,7 +538,6 @@ public class GestionarUsuarios extends javax.swing.JFrame {
     }
 
     private void aniadir() {
-
         if (!jTextFieldCorreo.getText().equals("") || !jTextFieldNombre.getText().equals("") || !jTextFieldApellido.getText().equals("") || (Integer) jComboBoxRol.getSelectedIndex() != 0 || jCheckBoxActivo.isSelected() != false) {
             if (jTextFieldCorreo.getText().contains("@") && jTextFieldCorreo.getText().contains(".")) {
                 usuarioTabla.setCorreo(jTextFieldCorreo.getText());
