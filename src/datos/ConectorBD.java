@@ -5,9 +5,6 @@
  */
 package datos;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -51,41 +48,39 @@ public class ConectorBD {
             Statement st = con.createStatement();
             st.executeUpdate(sql);
             st.close();
-            System.out.println("Insertado con exito ID_PELI ");
-            
+            JOptionPane.showMessageDialog(null, "Insertado con exito", "Insertado", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error al insertar ID_PELI ");
-            
+            JOptionPane.showMessageDialog(null, "Error ", "Error añadir", JOptionPane.ERROR_MESSAGE);
         }
 
     }
 
     public void updateCARATULA(Peliculas pelicula) {
-        String sql = String.format("UPDATE peliculas SET CARATULA = '%s' WHERE ID_PELI = '%d';", pelicula.getCaratula(),pelicula.getId_peli());
+        String sql = String.format("UPDATE peliculas SET CARATULA = '%s' WHERE ID_PELI = '%d';", pelicula.getCaratula(), pelicula.getId_peli());
 
         try {
             Statement st = con.createStatement();
             st.executeUpdate(sql);
             st.close();
-            System.out.println("Actualizado CARATULA con exito ID_PELI " + pelicula.getId_peli());
+            JOptionPane.showMessageDialog(null, "Actualizado con exito", "Actualizado", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error al actualizar ID_PELI " + pelicula.getId_peli());
+            JOptionPane.showMessageDialog(null, "Error ", "Error modificar caratula", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void updatePelis(Peliculas pelicula) {
-        String sql = "UPDATE peliculas SET TITULO = '"+pelicula.getTitulo()+"', ANIO = "+pelicula.getAnio()+", GENEROS = '"+pelicula.getGeneros()+"', SINOPSIS = '"+pelicula.getSinopsis()+"', RANGO_EDAD = '"+pelicula.getRango_edad()+"', PRECIO = '"+pelicula.getPrecio()+"' WHERE ID_PELI = "+pelicula.getId_peli()+";";
-        
+        String sql = "UPDATE peliculas SET TITULO = '" + pelicula.getTitulo() + "', ANIO = " + pelicula.getAnio() + ", GENEROS = '" + pelicula.getGeneros() + "', SINOPSIS = '" + pelicula.getSinopsis() + "', RANGO_EDAD = '" + pelicula.getRango_edad() + "', PRECIO = '" + pelicula.getPrecio() + "' WHERE ID_PELI = " + pelicula.getId_peli() + ";";
+
         try {
             Statement st = con.createStatement();
             st.executeUpdate(sql);
             st.close();
-            System.out.println("Actualizado  con exito ID_PELI " + pelicula.getId_peli());
+            JOptionPane.showMessageDialog(null, "Actualizado con exito", "Actualizado", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error al actualizar ID_PELI " + pelicula.getId_peli());
+            JOptionPane.showMessageDialog(null, "Error ", "Error modiciar", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -96,10 +91,10 @@ public class ConectorBD {
             Statement st = con.createStatement();
             st.executeUpdate(sql);
             st.close();
-            System.out.println("Eliminado con exito");
+            JOptionPane.showMessageDialog(null, "Eliminado con exito", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error ", "Error eliminar", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -119,10 +114,10 @@ public class ConectorBD {
 //            if (resul.next() == false) {
 //                JOptionPane.showMessageDialog(null, "No hay películas", "No se encuentra", JOptionPane.INFORMATION_MESSAGE);
 //            } else {
-                while (resul.next()) {
-                    pelis = new Peliculas(resul.getInt(1), resul.getString(2), resul.getString(3), resul.getInt(4), resul.getString(5), resul.getString(6), resul.getString(7), resul.getString(8), resul.getDouble(9));
-                    listaPelis.add(pelis);
-                }
+            while (resul.next()) {
+                pelis = new Peliculas(resul.getInt(1), resul.getString(2), resul.getString(3), resul.getInt(4), resul.getString(5), resul.getString(6), resul.getString(7), resul.getString(8), resul.getDouble(9));
+                listaPelis.add(pelis);
+            }
 //            }
 
             resul.close();
@@ -134,7 +129,6 @@ public class ConectorBD {
         return listaPelis;
     }
 
-   
     /**
      * Metodo que se utiliza para comprobar si existe el usuario
      *
@@ -201,15 +195,18 @@ public class ConectorBD {
     }
 
     public void insertUsuarios(Usuarios usuario) {
-        Usuarios user = null;
-        user = existeUsu(usuario.getCorreo());
-        if (user == null) {
+        //comprobamos que no exista ya este nuevo usuario
+        if (existeUsu(usuario.getCorreo()) == null) {
             String sql = String.format("INSERT INTO usuarios VALUES (0,'%s','%s','%s','%s','%s','%d','%d')",
                     usuario.getNombre(), usuario.getApellido(), usuario.getCorreo(), usuario.getPwd(), usuario.getFoto(), usuario.getIdRol(), usuario.getActivo());
             try {
                 Statement st = con.createStatement();
                 st.executeUpdate(sql);
                 st.close();
+                //mensaje para el usuario de que le tienen que activar la cuenta
+                if (usuario.getActivo() == 0) {
+                    JOptionPane.showMessageDialog(null, "El administrador te tiene que validar la cuenta para poder acceder", "Exito al crear usuario", JOptionPane.INFORMATION_MESSAGE);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error al actualizar", "Error", JOptionPane.ERROR_MESSAGE);
@@ -235,7 +232,7 @@ public class ConectorBD {
     }
 
     public void updateFotoUsuario(String correo, String foto) {
-        String sql = String.format("UPDATE usuarios SET PWD = '%s' WHERE CORREO = '%s';", foto, correo);
+        String sql = "UPDATE usuarios SET FOTO = '" + foto + "' WHERE CORREO = '" + correo + "';";
 
         try {
             Statement st = con.createStatement();
@@ -261,7 +258,21 @@ public class ConectorBD {
             JOptionPane.showMessageDialog(null, "Error al actualizar", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
+    public void deleteUsuarios(int id_usuario) {
+        String sql = "DELETE FROM usuarios WHERE ID_USUARIO = " + id_usuario;
+
+        try {
+            Statement st = con.createStatement();
+            st.executeUpdate(sql);
+            st.close();
+            JOptionPane.showMessageDialog(null, "Eliminado con exito", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public ArrayList<Usuarios> selectUsuarios() {
         ArrayList<Usuarios> listaUsuarios = new ArrayList<Usuarios>();
         //como se reutiliza la variable la ponemos a null
@@ -293,7 +304,6 @@ public class ConectorBD {
         return listaUsuarios;
     }
 
-   
     /*
     para hacer el historico
     
@@ -319,5 +329,4 @@ public class ConectorBD {
         System.out.println("------------------------------------");
     }
      */
-
 }

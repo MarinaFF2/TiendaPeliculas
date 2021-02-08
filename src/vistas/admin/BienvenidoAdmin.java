@@ -6,7 +6,6 @@
 package vistas.admin;
 
 import datos.ConectorBD;
-import java.awt.Frame;
 import modulos.Usuarios;
 
 /**
@@ -92,9 +91,13 @@ public class BienvenidoAdmin extends javax.swing.JFrame {
 
         jMenuPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgIconos/perfil.png"))); // NOI18N
         jMenuPerfil.setText("Pefil");
-        jMenuPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuPerfilActionPerformed(evt);
+        jMenuPerfil.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMenuPerfilMenuSelected(evt);
             }
         });
         jMenuBar.add(jMenuPerfil);
@@ -138,14 +141,6 @@ public class BienvenidoAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPerfilActionPerformed
-        dispose();
-        
-        PerfilAdmin p =new PerfilAdmin(usuarios);
-        p.setLocationRelativeTo(null);
-        p.setVisible(true);
-    }//GEN-LAST:event_jMenuPerfilActionPerformed
-
     private void jMenuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSalirActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItemSalirActionPerformed
@@ -173,6 +168,14 @@ public class BienvenidoAdmin extends javax.swing.JFrame {
         ba.setLocationRelativeTo(null);
         ba.setVisible(true);
     }//GEN-LAST:event_jMenuItemInicioActionPerformed
+
+    private void jMenuPerfilMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPerfilMenuSelected
+        dispose();
+
+        PerfilAdmin p = new PerfilAdmin(usuarios);
+        p.setLocationRelativeTo(null);
+        p.setVisible(true);
+    }//GEN-LAST:event_jMenuPerfilMenuSelected
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

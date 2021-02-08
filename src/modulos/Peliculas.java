@@ -5,13 +5,10 @@
  */
 package modulos;
 
-import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import java.sql.Array;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -36,30 +33,7 @@ public class Peliculas {
     /**
      * CONSTRUCTORES DE LA CLASE PELIULAs
      */
-    
-    /**
-     * CONSTRUCTOR PARA TRATAR EL OBJETO
-     *
-     * @param titulo
-     * @param director
-     * @param anio
-     * @param caratula
-     * @param sinopsis
-     * @param generos
-     * @param rango_edad
-     * @param precio
-     */
-    public Peliculas(String titulo, String director, int anio, String caratula, String sinopsis, String generos, String rango_edad, double precio) {
-        this.titulo = titulo;
-        this.director = director;
-        this.anio = anio;
-        this.caratula = caratula;
-        this.generos = generos;
-        this.sinopsis = sinopsis;
-        this.rango_edad = rango_edad;
-        this.precio = precio;
-    }
-
+        
     /**
      * CONSTRUCTOR PARA INSTANCIAR UN OBJETO DE LA CLASE PELICULA DESDE LA BBDD
      *
@@ -198,24 +172,6 @@ public class Peliculas {
             return filename.substring(index + 1);
         }
     }
-
-    /**
-     * METODO PARA CONSEGUIR EL SELECT DE QUE NECESITAMOS MOSTRAR EN LA INTERFAZ
-     *
-     * @return String[]
-     */
-    public String[] selectRango_edad() {
-        String[] vectorRangoEdad = new String[5];
-
-        vectorRangoEdad[0] = "Todos los públicos";
-        vectorRangoEdad[1] = "+7";
-        vectorRangoEdad[2] = "+12";
-        vectorRangoEdad[3] = "+16";
-        vectorRangoEdad[5] = "+18";
-
-        return vectorRangoEdad;
-    }
-
 
     /**
      * METODO QUE DEVUELVE EL TITULO Y EL AÑO

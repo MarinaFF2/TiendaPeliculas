@@ -10,9 +10,9 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Clase TablaPuntuacionModel Hereda de DefaultTableModel
+ * Clase TablaGestionPeliculasModel Hereda de DefaultTableModel
  *
- * @see TablaPuntuacionModel
+ * @see TablaGestionPeliculasModel
  * @author ff_ma
  */
 public class TablaGestionPeliculasModel extends DefaultTableModel {

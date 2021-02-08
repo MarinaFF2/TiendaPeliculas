@@ -16,11 +16,12 @@ public class BienvenidoUser extends javax.swing.JFrame {
 
     private Usuarios usuarios;
     private ConectorBD conectBD;
+
     /**
      * Creates new form BienvenidaUser
      */
-    public BienvenidoUser(Usuarios usuarios){
-        
+    public BienvenidoUser(Usuarios usuarios) {
+
         initComponents();
         this.usuarios = usuarios;
         conectBD = new ConectorBD();
@@ -98,11 +99,6 @@ public class BienvenidoUser extends javax.swing.JFrame {
                 jMenuPerfilMenuSelected(evt);
             }
         });
-        jMenuPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuPerfilActionPerformed(evt);
-            }
-        });
         jMenuBar.add(jMenuPerfil);
 
         jMenuPeliculas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgIconos/peliculas.png"))); // NOI18N
@@ -134,21 +130,13 @@ public class BienvenidoUser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPerfilActionPerformed
-        dispose();
-        
-        PerfilUser pu = new PerfilUser(usuarios);
-        pu.setLocationRelativeTo(null);
-        pu.setVisible(true); 
-    }//GEN-LAST:event_jMenuPerfilActionPerformed
-
     private void jMenuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSalirActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItemSalirActionPerformed
 
     private void jMenuItemInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInicioActionPerformed
         dispose();
-        
+
         BienvenidoUser bu = new BienvenidoUser(usuarios);
         bu.setLocationRelativeTo(null);
         bu.setVisible(true);
@@ -156,18 +144,18 @@ public class BienvenidoUser extends javax.swing.JFrame {
 
     private void jMenuPerfilMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPerfilMenuSelected
         dispose();
-        
-        VisualizarPeliculas vp = new VisualizarPeliculas(usuarios);
-        vp.setLocationRelativeTo(null);
-        vp.setVisible(true); 
+
+        PerfilUser pu = new PerfilUser(usuarios);
+        pu.setLocationRelativeTo(null);
+        pu.setVisible(true);
     }//GEN-LAST:event_jMenuPerfilMenuSelected
 
     private void jMenuPeliculasMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPeliculasMenuSelected
         dispose();
-        
+
         VisualizarPeliculas vp = new VisualizarPeliculas(usuarios);
         vp.setLocationRelativeTo(null);
-        vp.setVisible(true);  
+        vp.setVisible(true);
     }//GEN-LAST:event_jMenuPeliculasMenuSelected
 
 

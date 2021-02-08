@@ -9,35 +9,21 @@ import vistas.admin.BienvenidoAdmin;
 import vistas.user.BienvenidoUser;
 import datos.ConectorBD;
 import java.awt.Color;
-import java.security.SecureRandom;
-import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 import modulos.Usuarios;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  *
  * @author ff_ma
  */
 public class Loggin extends javax.swing.JFrame {
-
-    private Usuarios usuarios;
-    private ConectorBD conectBD;
-
     /**
      * Creates new form Loggin
      */
     public Loggin() {
         initComponents();
         setLocationRelativeTo(null);
-        conectBD = new ConectorBD();
     }
 
     /**
@@ -155,10 +141,10 @@ public class Loggin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonIncioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncioSesionActionPerformed
-        //comprobamos que ningýmn campo este vacío
+        //comprobamos que ningún campo este vacío
         if (TextPassPwd.getText().length() != 0 && TextFUsuario.getText().length() != 0) {
             if (TextFUsuario.getText().contains("@") && TextFUsuario.getText().contains(".")) {
-                this.confirmar();
+                confirmar();
             } else {
                 JOptionPane.showMessageDialog(null, "Error en el campo usuario, hay que introducir un correo", "Error al introducir el correo", JOptionPane.CLOSED_OPTION);
             }
@@ -169,7 +155,6 @@ public class Loggin extends javax.swing.JFrame {
 
     private void jLabelRegistrarseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegistrarseMouseClicked
         JDialogRegistrarse regis = new JDialogRegistrarse(this, true);
-
         regis.setLocationRelativeTo(null);
         regis.setSize(400, 400);
         regis.setVisible(true);
@@ -231,38 +216,36 @@ public class Loggin extends javax.swing.JFrame {
         });
     }
 
-    private void confirmar() {
-        usuarios = null;
-
-        String usuario = this.TextFUsuario.getText();
+    private void confirmar() {  
+        ConectorBD conectBD = new ConectorBD();
+        
+        String usu = this.TextFUsuario.getText();
         //contraseña codificada
         String pwdmd5Hex = DigestUtils.md5Hex(TextPassPwd.getText());
+        
+        conectBD.openBD();
+        Usuarios usuario = conectBD.existeUsuario(usu, pwdmd5Hex);
+        conectBD.closeBD();
 
-//        String pwdmd5Hex = DigestUtils.md5Hex(pwd);
-        this.conectBD.openBD();
-        this.usuarios = this.conectBD.existeUsuario(usuario, pwdmd5Hex);
-        this.conectBD.closeBD();
-
-//        this.usuarios = this.conectBD.existeUsuario(usuario, pwdmd5Hex);
-        if (this.usuarios != null) {
-            if (this.usuarios.getIdRol() == 1 && this.usuarios.getActivo( )== 1) { //es usuario normal
+        if (usuario != null) {
+            if (usuario.getIdRol() == 1 && usuario.getActivo( )== 1) { //es usuario normal
                 //volvemos invisible esta venta
                 dispose();
 
-                //Redirigmos a 
-                BienvenidoUser t = new BienvenidoUser(this.usuarios);
+                //Redirigmos a BienvenidoUser
+                BienvenidoUser t = new BienvenidoUser(usuario);
                 t.setLocationRelativeTo(null);
                 t.setVisible(true);
-            } else if (this.usuarios.getIdRol() == 2 && this.usuarios.getActivo() == 1) { //es un admin
+            } else if (usuario.getIdRol() == 2 && usuario.getActivo() == 1) { //es un admin
                 //volvemos invisible esta venta
                 dispose();
 
-                //Redirigmos a 
-                BienvenidoAdmin t = new BienvenidoAdmin(this.usuarios);
+                //Redirigmos a BienvenidoAdmin
+                BienvenidoAdmin t = new BienvenidoAdmin(usuario);
                 t.setLocationRelativeTo(null);
                 t.setVisible(true);
             } else { // no tiene rol asigando o no está activado
-                JOptionPane.showMessageDialog(null, "Error al crear el usuario", "Error de creación", JOptionPane.CLOSED_OPTION);
+                JOptionPane.showMessageDialog(null, "Te tienen que activar el usuario", "Error de activación", JOptionPane.CLOSED_OPTION);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Error en el correo o la contraseña", "Error de autentificacion", JOptionPane.CLOSED_OPTION);

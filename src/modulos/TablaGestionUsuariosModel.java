@@ -10,9 +10,9 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Clase TablaPuntuacionModel Hereda de DefaultTableModel
+ * Clase TablaGestionUsuariosModel Hereda de DefaultTableModel
  *
- * @see TablaPuntuacionModel
+ * @see TablaGestionUsuariosModel
  * @author ff_ma
  */
 public class TablaGestionUsuariosModel extends DefaultTableModel {

@@ -44,7 +44,6 @@
           </Properties>
           <Events>
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="jMenuPerfilMenuSelected"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuPerfilActionPerformed"/>
           </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuPeliculas">
@@ -204,6 +203,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldCorreo">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="jPasswordFieldContrasenia">
         </Component>

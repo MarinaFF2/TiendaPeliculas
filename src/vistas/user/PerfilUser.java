@@ -24,8 +24,6 @@ public class PerfilUser extends javax.swing.JFrame {
     private Usuarios usuarios;
     private ConectorBD conectBD;
 
-    private JFileChooser elegirRuta;
-    private int seleccion = 0;
     private File foto = null;
 
     /**
@@ -77,6 +75,8 @@ public class PerfilUser extends javax.swing.JFrame {
 
         jLabelCorreo.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabelCorreo.setText("Correo:");
+
+        jTextFieldCorreo.setEditable(false);
 
         jLabelContrasenia.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabelContrasenia.setText("Nueva Contraseña:");
@@ -220,11 +220,6 @@ public class PerfilUser extends javax.swing.JFrame {
                 jMenuPerfilMenuSelected(evt);
             }
         });
-        jMenuPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuPerfilActionPerformed(evt);
-            }
-        });
         jMenuBar.add(jMenuPerfil);
 
         jMenuPeliculas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgIconos/peliculas.png"))); // NOI18N
@@ -279,18 +274,10 @@ public class PerfilUser extends javax.swing.JFrame {
     private void jMenuPerfilMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPerfilMenuSelected
         dispose();
 
-        VisualizarPeliculas vp = new VisualizarPeliculas(usuarios);
-        vp.setLocationRelativeTo(null);
-        vp.setVisible(true);
-    }//GEN-LAST:event_jMenuPerfilMenuSelected
-
-    private void jMenuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPerfilActionPerformed
-        dispose();
-
         PerfilUser pu = new PerfilUser(usuarios);
         pu.setLocationRelativeTo(null);
         pu.setVisible(true);
-    }//GEN-LAST:event_jMenuPerfilActionPerformed
+    }//GEN-LAST:event_jMenuPerfilMenuSelected
 
     private void jMenuPeliculasMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPeliculasMenuSelected
         dispose();
@@ -300,13 +287,21 @@ public class PerfilUser extends javax.swing.JFrame {
         vp.setVisible(true);
     }//GEN-LAST:event_jMenuPeliculasMenuSelected
     private void guardar() {
+        ConectorBD conectBD = new ConectorBD();
+        
         //Se comprueba que han habido cambios
         if (!jTextFieldNombre.getText().equals(usuarios.getNombre()) || !jTextFieldApellidos.getText().equals(usuarios.getApellido()) || !jTextFieldCorreo.getText().equals(usuarios.getCorreo())) {
-            usuarios.setNombre(jTextFieldNombre.getText());
-            usuarios.setApellido(jTextFieldApellidos.getText());
-            conectBD.openBD();
-            conectBD.updateUsuario(usuarios);
-            conectBD.closeBD();
+            if (jTextFieldCorreo.getText().contains("@") && jTextFieldCorreo.getText().contains(".")) {                
+                usuarios.setCorreo(jTextFieldCorreo.getText());
+                usuarios.setNombre(jTextFieldNombre.getText());
+                usuarios.setApellido(jTextFieldApellidos.getText());
+                
+                conectBD.openBD();
+                conectBD.updateUsuario(usuarios);
+                conectBD.closeBD();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error en el campo usuario, hay que introducir un correo", "Error al introducir el correo", JOptionPane.CLOSED_OPTION);
+            }
         }
         //Se comprueba que queremos cambiar la contraseña
         if (jPasswordFieldContrasenia != null && jPasswordFieldConfirContrasenia != null) {
@@ -328,7 +323,7 @@ public class PerfilUser extends javax.swing.JFrame {
         }
         //Se comprueba que queremos cambiar la foto
         if (foto != null) {
-            usuarios.setFoto(usuarios.ponerFoto(foto, usuarios.getCorreo()));
+            usuarios.setFoto(usuarios.ponerFoto(foto, usuarios.getId_usuario() + ""));
 
             conectBD.openBD();
             conectBD.updateFotoUsuario(usuarios.getCorreo(), usuarios.getFoto());
@@ -337,15 +332,13 @@ public class PerfilUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Foto modificada con exito", "Exito al modificar perfil", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
     private void examinarFoto() {
         //Seleccionamos la foto
-        elegirRuta = new JFileChooser();
+        JFileChooser elegirRuta = new JFileChooser();
         elegirRuta.setDialogTitle("Selecciona la foto de perfil");
         elegirRuta.setFileFilter(new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif"));
         elegirRuta.setCurrentDirectory(new File(System.getProperty("user.dir") + "/Pictures"));
-        seleccion = elegirRuta.showOpenDialog(this);
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
+        if (elegirRuta.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             foto = elegirRuta.getSelectedFile();
             if (foto != null) {
                 ImageIcon icono = new ImageIcon(foto.getAbsolutePath());
@@ -354,12 +347,12 @@ public class PerfilUser extends javax.swing.JFrame {
             }
         }
     }
-
     private void rellenarFormulario() {
         jTextFieldNombre.setText(usuarios.getNombre());
         jTextFieldApellidos.setText(usuarios.getApellido());
         jTextFieldCorreo.setText(usuarios.getCorreo());
-        jButtonFoto.setIcon(new ImageIcon(new ImageIcon(usuarios.getFoto()).getImage().getScaledInstance(jButtonFoto.getWidth(), jButtonFoto.getHeight(), Image.SCALE_SMOOTH)));
+        ImageIcon icono = new ImageIcon(System.getProperty("user.dir") + usuarios.getFoto());
+        jButtonFoto.setIcon(new ImageIcon(icono.getImage().getScaledInstance(jButtonFoto.getWidth(), jButtonFoto.getHeight(), Image.SCALE_SMOOTH)));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonExaminar;

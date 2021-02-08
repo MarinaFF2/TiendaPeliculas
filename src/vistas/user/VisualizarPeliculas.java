@@ -254,11 +254,6 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
                 jMenuPerfilMenuSelected(evt);
             }
         });
-        jMenuPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuPerfilActionPerformed(evt);
-            }
-        });
         jMenuBar.add(jMenuPerfil);
 
         jMenuPeliculas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgIconos/peliculas.png"))); // NOI18N
@@ -296,10 +291,10 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
 
     private void jMenuItemInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInicioActionPerformed
         dispose();
-
-        BienvenidoUser bu = new BienvenidoUser(usuarios);
-        bu.setLocationRelativeTo(null);
-        bu.setVisible(true);
+        
+        PerfilUser pu = new PerfilUser(usuarios);
+        pu.setLocationRelativeTo(null);
+        pu.setVisible(true); 
     }//GEN-LAST:event_jMenuItemInicioActionPerformed
 
     private void jMenuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSalirActionPerformed
@@ -313,14 +308,6 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
         vp.setLocationRelativeTo(null);
         vp.setVisible(true);
     }//GEN-LAST:event_jMenuPerfilMenuSelected
-
-    private void jMenuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPerfilActionPerformed
-        dispose();
-
-        PerfilUser pu = new PerfilUser(usuarios);
-        pu.setLocationRelativeTo(null);
-        pu.setVisible(true);
-    }//GEN-LAST:event_jMenuPerfilActionPerformed
 
     private void jMenuPeliculasMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPeliculasMenuSelected
         dispose();

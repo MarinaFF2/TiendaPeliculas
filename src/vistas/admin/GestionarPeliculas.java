@@ -26,8 +26,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
     private Peliculas peli;
     private TablaGestionPeliculasModel tablaModel;
 
-    private JFileChooser elegirRuta;
-    private int seleccion = 0;
     private File foto = null;
 
     /**
@@ -41,9 +39,9 @@ public class GestionarPeliculas extends javax.swing.JFrame {
 
         //creamos la tabla con DefaultTableModel
         cargarTabla();
-        
+
         //se aplica los saltos de línea en el textarea automaticamente
-        jTextAreaSinopsis.setLineWrap(true); 
+        jTextAreaSinopsis.setLineWrap(true);
         //Hace que los saltos de linea no corte las palabras
         jTextAreaSinopsis.setWrapStyleWord(true);
     }
@@ -384,9 +382,13 @@ public class GestionarPeliculas extends javax.swing.JFrame {
 
         jMenuPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgIconos/perfil.png"))); // NOI18N
         jMenuPerfil.setText("Pefil");
-        jMenuPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuPerfilActionPerformed(evt);
+        jMenuPerfil.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMenuPerfilMenuSelected(evt);
             }
         });
         jMenuBar.add(jMenuPerfil);
@@ -456,14 +458,6 @@ public class GestionarPeliculas extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jMenuItemSalirActionPerformed
 
-    private void jMenuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPerfilActionPerformed
-        dispose();
-
-        PerfilAdmin p = new PerfilAdmin(usuarios);
-        p.setLocationRelativeTo(null);
-        p.setVisible(true);
-    }//GEN-LAST:event_jMenuPerfilActionPerformed
-
     private void jMenuItemUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUsuariosActionPerformed
         dispose();
 
@@ -499,7 +493,17 @@ public class GestionarPeliculas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTableMouseClicked
 
+    private void jMenuPerfilMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPerfilMenuSelected
+        dispose();
+
+        PerfilAdmin p = new PerfilAdmin(usuarios);
+        p.setLocationRelativeTo(null);
+        p.setVisible(true);
+    }//GEN-LAST:event_jMenuPerfilMenuSelected
+
     private void rellenarFormulario(int fila) {
+        limpiar();
+        
         peli = new Peliculas();
         peli.setId_peli(Integer.parseInt(jTable.getValueAt(fila, 0).toString()));
         peli.setCaratula(jTable.getValueAt(fila, 1).toString());
@@ -515,12 +519,12 @@ public class GestionarPeliculas extends javax.swing.JFrame {
 
     private void examinarFoto() {
         //Seleccionamos la foto
-        elegirRuta = new JFileChooser();
+        JFileChooser elegirRuta = new JFileChooser();
         elegirRuta.setDialogTitle("Selecciona la foto de perfil");
         elegirRuta.setFileFilter(new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif"));
         elegirRuta.setCurrentDirectory(new File(System.getProperty("user.dir") + "/Pictures"));
-        seleccion = elegirRuta.showOpenDialog(this);
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
+        
+        if (elegirRuta.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             foto = elegirRuta.getSelectedFile();
             if (foto != null) {
                 ImageIcon icono = new ImageIcon(foto.getAbsolutePath());
@@ -698,21 +702,26 @@ public class GestionarPeliculas extends javax.swing.JFrame {
             conectBD.openBD();
             conectBD.insertPelis(peli);
             conectBD.closeBD();
-
-            JOptionPane.showMessageDialog(null, "Foto modificada con exito", "Exito al modificar perfil", JOptionPane.INFORMATION_MESSAGE);
+            
             limpiar();
 
             //actualizamos los campos de la tabla
             cargarTabla();
+        } else {
+            JOptionPane.showMessageDialog(null, "Hay campos sin rellenar", "Al añadir pelicula", JOptionPane.WARNING_MESSAGE);
         }
     }
 
     private void eliminar() {
-        System.out.println(peli.getId_peli());
         conectBD.openBD();
         conectBD.deletePelis(peli.getId_peli());
         conectBD.closeBD();
-
+        File fichero = new File(System.getProperty("user.dir") + peli.getCaratula());
+        if (fichero.delete()) {
+            System.out.println("El fichero ha sido borrado satisfactoriamente");
+        } else {
+            System.out.println("El fichero no puede ser borrado");
+        }
         //actualizamos los campos de la tabla
         cargarTabla();
 
@@ -720,34 +729,31 @@ public class GestionarPeliculas extends javax.swing.JFrame {
     }
 
     private void modificar() {
-        System.out.println(peli.getId_peli() + ", " + peli.getCaratula());
-
-//        if (!jTextFieldTitulo.getText().equals("") || !jTextFieldAnio.getText().equals("") || !jTextFieldDirector.getText().equals("") || comprobarCheckBoxGenero() != null || foto != null ) {
-        peli.setTitulo(jTextFieldTitulo.getText());
-        peli.setDirector(jTextFieldDirector.getText());
-        peli.setAnio(Integer.parseInt(jTextFieldAnio.getText()));
-        peli.setGeneros(comprobarCheckBoxGenero());
-        peli.setSinopsis(jTextAreaSinopsis.getText());
-        peli.setRango_edad((String) jComboBoxRangoEdad.getSelectedItem());
-        peli.setPrecio(Double.parseDouble(jTextFieldPrecio.getText()));
-
         if (foto != null) {
             peli.setCaratula(peli.ponerFoto(foto, peli.getId_peli() + ""));
             conectBD.openBD();
             conectBD.updateCARATULA(peli);
             conectBD.closeBD();
         }
-        conectBD.openBD();
-        conectBD.updatePelis(peli);
-        conectBD.closeBD();
+        if (!jTextFieldTitulo.getText().equals("") || !jTextFieldAnio.getText().equals("") || !jTextFieldDirector.getText().equals("") || comprobarCheckBoxGenero() != null) {
+            peli.setTitulo(jTextFieldTitulo.getText());
+            peli.setDirector(jTextFieldDirector.getText());
+            peli.setAnio(Integer.parseInt(jTextFieldAnio.getText()));
+            peli.setGeneros(comprobarCheckBoxGenero());
+            peli.setSinopsis(jTextAreaSinopsis.getText());
+            peli.setRango_edad((String) jComboBoxRangoEdad.getSelectedItem());
+            peli.setPrecio(Double.parseDouble(jTextFieldPrecio.getText()));
+            conectBD.openBD();
+            conectBD.updatePelis(peli);
+            conectBD.closeBD();
 
-        JOptionPane.showMessageDialog(null, "Foto modificada con exito", "Exito al modificar perfil", JOptionPane.INFORMATION_MESSAGE);
+            //actualizamos los campos de la tabla
+            cargarTabla();
 
-        //actualizamos los campos de la tabla
-        cargarTabla();
-
-        limpiar();
-//        }
+            limpiar();
+        } else {
+            JOptionPane.showMessageDialog(null, "Hay campos sin rellenar", "Al modificar pelicula", JOptionPane.WARNING_MESSAGE);
+        }       
     }
 
     private void rellenarCheckBoxGenero(String generos) {

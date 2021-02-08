@@ -33,7 +33,7 @@ public class Usuarios {
      * CONSTRUCTORES DE LA CLASE USUARIOS
      */
     /**
-     * CONSTRUCTOR PARA INSTANCIAR UN OBJETO DE LA CLASE PELICULA DESDE LA BBDD
+     * CONSTRUCTOR PARA INSTANCIAR UN OBJETO DE LA CLASE Usuarios DESDE LA BBDD
      *
      * @param id_usuario
      * @param nombre
@@ -42,6 +42,7 @@ public class Usuarios {
      * @param pwd
      * @param foto
      * @param idRol
+     * @param activo
      */
     public Usuarios(int id_usuario, String nombre, String apellido, String correo, String pwd, String foto, int idRol, int activo) {
         this.id_usuario = id_usuario;
@@ -63,6 +64,7 @@ public class Usuarios {
      * @param pwd
      * @param foto
      * @param idRol
+     * @param activo
      */
     public Usuarios(String nombre, String apellido, String correo, String pwd, String foto, int idRol, int activo) {
         this.nombre = nombre;
@@ -153,13 +155,13 @@ public class Usuarios {
     /**
      * METODOS DE LA CLASE USUARIOS
      */
-    public String ponerFoto(File foto, String emailUser) {
+    public String ponerFoto(File foto, String idUser) {
         String rutaFoto = null;
 //        String extension = getExtension(foto.getName());
-        String extension = "PNG";
+        String extension = "png";
         try {
             //creamos la nueva ruta del fichero
-            rutaFoto = "/img/imgUser/" + emailUser + "." + extension;
+            rutaFoto = "/img/imgUser/" + idUser + "." + extension;
 //            String fichero = System.getProperty("user.dir")+getClass().getResource("/imgUser/")+foto.getName();
 
             //creamos el fichero se destino

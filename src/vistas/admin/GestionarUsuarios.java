@@ -10,6 +10,8 @@ import java.awt.Image;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modulos.TablaGestionUsuariosModel;
 import modulos.Usuarios;
@@ -23,6 +25,7 @@ public class GestionarUsuarios extends javax.swing.JFrame {
     private Usuarios usuarioSesion; //sesion del usuario que somos
     private Usuarios usuarioTabla; //usuario que estamos tratando en el formulario
     private ConectorBD conectBD;
+    private TablaGestionUsuariosModel tablaModel;
 
     private JFileChooser elegirRuta;
     private int seleccion = 0;
@@ -36,6 +39,10 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         initComponents();
         this.usuarioSesion = usuarioSesion;
         conectBD = new ConectorBD();
+        usuarioTabla = new Usuarios();
+
+        //creamos la tabla con DefaultTableModel
+        cargarTabla();
     }
 
     /**
@@ -82,14 +89,18 @@ public class GestionarUsuarios extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable.setModel(new TablaGestionUsuariosModel());
+        jTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable);
 
         javax.swing.GroupLayout jPanelInferiorLayout = new javax.swing.GroupLayout(jPanelInferior);
         jPanelInferior.setLayout(jPanelInferiorLayout);
         jPanelInferiorLayout.setHorizontalGroup(
             jPanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanelInferiorLayout.setVerticalGroup(
@@ -101,8 +112,6 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         );
 
         jLabelCorreo.setText("Correo:");
-
-        jTextFieldCorreo.setEditable(false);
 
         jLabelNombre.setText("Nombre:");
 
@@ -173,7 +182,7 @@ public class GestionarUsuarios extends javax.swing.JFrame {
                             .addComponent(jLabelCorreo)
                             .addComponent(jLabelNombre)
                             .addComponent(jLabelApellido))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextFieldCorreo)
                             .addComponent(jTextFieldNombre)
@@ -188,8 +197,9 @@ public class GestionarUsuarios extends javax.swing.JFrame {
                             .addComponent(jCheckBoxActivo)))
                     .addGroup(jPanelSuperiorLayout.createSequentialGroup()
                         .addComponent(jLabelFoto)
-                        .addGap(134, 134, 134)
-                        .addComponent(jLabelFotoSeleccionada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(157, 157, 157)
+                        .addComponent(jLabelFotoSeleccionada, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelSuperiorLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -234,10 +244,10 @@ public class GestionarUsuarios extends javax.swing.JFrame {
                             .addComponent(jCheckBoxActivo))
                         .addGap(7, 7, 7)
                         .addGroup(jPanelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelFotoSeleccionada, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jButtonExaminar)
-                                .addComponent(jLabelFoto))
-                            .addComponent(jLabelFotoSeleccionada, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabelFoto))))
                     .addComponent(jButtonFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -272,9 +282,13 @@ public class GestionarUsuarios extends javax.swing.JFrame {
 
         jMenuPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgIconos/perfil.png"))); // NOI18N
         jMenuPerfil.setText("Pefil");
-        jMenuPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuPerfilActionPerformed(evt);
+        jMenuPerfil.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMenuPerfilMenuSelected(evt);
             }
         });
         jMenuBar.add(jMenuPerfil);
@@ -323,36 +337,24 @@ public class GestionarUsuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
-        // TODO add your handling code here:
+        modificar();
     }//GEN-LAST:event_jButtonModificarActionPerformed
 
     private void jButtonAniadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAniadirActionPerformed
-        // TODO add your handling code here:
+        aniadir();
     }//GEN-LAST:event_jButtonAniadirActionPerformed
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
-        // TODO add your handling code here:
+        eliminar();
     }//GEN-LAST:event_jButtonEliminarActionPerformed
 
     private void jButtonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarActionPerformed
-        jTextFieldCorreo.setText("");
-        jTextFieldNombre.setText("");
-        jTextFieldApellido.setText("");
-//        jButtonFoto
-        jComboBoxRol.setSelectedItem("Ninguno");
+        limpiar();
     }//GEN-LAST:event_jButtonLimpiarActionPerformed
 
     private void jMenuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSalirActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItemSalirActionPerformed
-
-    private void jMenuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPerfilActionPerformed
-        dispose();
-
-        PerfilAdmin p = new PerfilAdmin(usuarioSesion);
-        p.setLocationRelativeTo(null);
-        p.setVisible(true);
-    }//GEN-LAST:event_jMenuPerfilActionPerformed
 
     private void jMenuItemUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUsuariosActionPerformed
         dispose();
@@ -380,19 +382,89 @@ public class GestionarUsuarios extends javax.swing.JFrame {
 
     private void jButtonExaminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExaminarActionPerformed
         examinarFoto();
-
     }//GEN-LAST:event_jButtonExaminarActionPerformed
-    private String seleccionarRol() {
-        String rol = "Ninguno";
 
-        return rol;
+    private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
+        int fila = jTable.getSelectedRow();
+        if (fila != -1) {
+            rellenarFormulario(fila);
+        }
+    }//GEN-LAST:event_jTableMouseClicked
+
+    private void jMenuPerfilMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPerfilMenuSelected
+        dispose();
+
+        PerfilAdmin p = new PerfilAdmin(usuarioSesion);
+        p.setLocationRelativeTo(null);
+        p.setVisible(true);
+    }//GEN-LAST:event_jMenuPerfilMenuSelected
+    private void cargarTabla() {
+        declararModelo();
+
+        //añadimos el contenido
+        conectBD.openBD();
+        this.tablaModel.setFila(conectBD.selectUsuarios());
+        conectBD.closeBD();
+    }
+
+    private void declararModelo() {
+        //instanciamos el modelo de tabla creado
+        this.tablaModel = new TablaGestionUsuariosModel();
+        //permitimos la seleccion de la fila de la tabla
+        jTable.setRowSelectionAllowed(true);
+        //añadimos una interfaz que nos 
+        //perimte elegir el modo de selecion de la tabla
+        //hemos elegido el que nos permite 
+        //"seleccionar un índice de lista a la vez"
+        jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //añadimos el modelo a la tabla
+        this.jTable.setModel(tablaModel);
+    }
+
+    private void rellenarFormulario(int fila) {
+        limpiar();
+
+        usuarioTabla = new Usuarios();
+        usuarioTabla.setId_usuario(Integer.parseInt(jTable.getValueAt(fila, 0).toString()));
+        usuarioTabla.setFoto(jTable.getValueAt(fila, 1).toString());
+        jButtonFoto.setIcon(new ImageIcon(new ImageIcon(System.getProperty("user.dir") + usuarioTabla.getFoto()).getImage().getScaledInstance(jButtonFoto.getWidth(), jButtonFoto.getHeight(), Image.SCALE_SMOOTH)));
+        jTextFieldCorreo.setText(jTable.getValueAt(fila, 2).toString());
+        jTextFieldNombre.setText(jTable.getValueAt(fila, 3).toString());
+        jTextFieldApellido.setText(jTable.getValueAt(fila, 4).toString());
+        rellenarActivo(jTable.getValueAt(fila, 5).toString());
+        rellenarRol(jTable.getValueAt(fila, 6).toString());
+
+        jTextFieldCorreo.setEditable(false);
+    }
+
+    private void comprobarRol() {
+        switch ((String) jComboBoxRol.getSelectedItem()) {
+            case "Ninguno": //Ninguno
+                usuarioTabla.setIdRol(0);
+                break;
+            case "Usuario": //Usuario
+                usuarioTabla.setIdRol(1);
+                break;
+            case "Administrador": //Admin
+                usuarioTabla.setIdRol(2);
+                break;
+        }
+
+    }
+
+    private void comprobarActivo() {
+        if (jCheckBoxActivo.isSelected()) {
+            usuarioTabla.setActivo(1);
+        } else {
+            usuarioTabla.setActivo(0);
+        }
     }
 
     private void examinarFoto() {
         //Seleccionamos la foto
         elegirRuta = new JFileChooser();
         elegirRuta.setDialogTitle("Selecciona la foto de perfil");
-        elegirRuta.setFileFilter(new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif"));
+        elegirRuta.setFileFilter(new FileNameExtensionFilter("JPEG, JPG, PNG & GIF", "jpeg", "jpg", "png", "gif"));
         elegirRuta.setCurrentDirectory(new File(System.getProperty("user.dir") + "/Pictures"));
         seleccion = elegirRuta.showOpenDialog(this);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
@@ -405,11 +477,115 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         }
     }
 
-    private void rellenarFormulario(int fila) {
-        jTextFieldNombre.setText(jTable.getValueAt(fila, 2).toString());
-        jTextFieldApellido.setText(usuarioTabla.getApellido());
-        jTextFieldCorreo.setText(usuarioTabla.getCorreo());
-        jButtonFoto.setIcon(new ImageIcon(new ImageIcon(usuarioTabla.getFoto()).getImage().getScaledInstance(jButtonFoto.getWidth(), jButtonFoto.getHeight(), Image.SCALE_SMOOTH)));
+    private void rellenarRol(String rol) {
+        if (rol.equals("1")) {//rol = 1 usuario             
+            jComboBoxRol.setSelectedItem("Usuario");
+        } else if (rol.equals("2")) {//rol = 2 admin 
+            jComboBoxRol.setSelectedItem("Administrador");
+        } else { //Ningún rol = 0            
+            jComboBoxRol.setSelectedItem("Ninguno");
+        }
+    }
+
+    private void rellenarActivo(String activo) {
+        if (activo.equals("1")) {//activo = 1, el usuario está activo
+            jCheckBoxActivo.setSelected(true);
+        }
+        if (activo.equals("0")) { //activo = 0, el usuario está desactivado    
+            jCheckBoxActivo.setSelected(false);
+        }
+    }
+
+    private void limpiar() {
+        jTextFieldCorreo.setText("");
+        jTextFieldNombre.setText("");
+        jTextFieldApellido.setText("");
+        foto = null;
+        jLabelFotoSeleccionada.setText("");
+        jButtonFoto.setIcon(new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/img/imgIconos/user.jpeg").getImage().getScaledInstance(jButtonFoto.getWidth(), jButtonFoto.getHeight(), Image.SCALE_SMOOTH)));
+        jComboBoxRol.setSelectedIndex(0);
+        jCheckBoxActivo.setSelected(false);
+        jTextFieldCorreo.setEditable(true);
+    }
+
+    private void modificar() {
+        System.out.println(usuarioTabla.getId_usuario() + ", " + usuarioTabla.getFoto() + " v " + foto);
+
+        if (!jTextFieldNombre.getText().equals("") || !jTextFieldApellido.getText().equals("") || (Integer) jComboBoxRol.getSelectedIndex() != 0 || jCheckBoxActivo.isSelected() != false) {
+            usuarioTabla.setCorreo(jTextFieldCorreo.getText());
+            usuarioTabla.setNombre(jTextFieldNombre.getText());
+            usuarioTabla.setApellido(jTextFieldApellido.getText());
+            comprobarRol();
+            comprobarActivo();
+
+            conectBD.openBD();
+            conectBD.updateUsuario(usuarioTabla);
+            conectBD.closeBD();
+
+            //actualizamos los campos de la tabla
+            cargarTabla();
+
+            limpiar();
+        } else {
+            JOptionPane.showMessageDialog(null, "Hay campos sin rellenar", "Al modificar usuario", JOptionPane.WARNING_MESSAGE);
+        }
+        if (foto != null) {
+            usuarioTabla.setFoto(usuarioTabla.ponerFoto(foto, usuarioTabla.getId_usuario() + ""));
+            conectBD.openBD();
+            conectBD.updateFotoUsuario(usuarioTabla.getCorreo(), usuarioTabla.getFoto());
+            conectBD.closeBD();
+        }
+    }
+
+    private void aniadir() {
+
+        if (!jTextFieldCorreo.getText().equals("") || !jTextFieldNombre.getText().equals("") || !jTextFieldApellido.getText().equals("") || (Integer) jComboBoxRol.getSelectedIndex() != 0 || jCheckBoxActivo.isSelected() != false) {
+            if (jTextFieldCorreo.getText().contains("@") && jTextFieldCorreo.getText().contains(".")) {
+                usuarioTabla.setCorreo(jTextFieldCorreo.getText());
+                usuarioTabla.setNombre(jTextFieldNombre.getText());
+                usuarioTabla.setApellido(jTextFieldApellido.getText());
+                usuarioTabla.setPwd("c4ca4238a0b923820dcc509a6f75849b");
+                comprobarRol();
+                comprobarActivo();
+
+                if (foto != null) {
+                    usuarioTabla.setFoto(usuarioTabla.ponerFoto(foto, usuarioTabla.getId_usuario() + ""));
+                    conectBD.openBD();
+                    conectBD.updateFotoUsuario(usuarioTabla.getCorreo(), usuarioTabla.getFoto());
+                    conectBD.closeBD();
+                }
+
+                conectBD.openBD();
+                conectBD.insertUsuarios(usuarioTabla);
+                conectBD.closeBD();
+
+                //actualizamos los campos de la tabla
+                cargarTabla();
+
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error en el campo usuario, hay que introducir un correo", "Error al introducir el correo", JOptionPane.CLOSED_OPTION);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Hay campos sin rellenar", "Al añadir usuario", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void eliminar() {
+        conectBD.openBD();
+        conectBD.deleteUsuarios(usuarioTabla.getId_usuario());
+        conectBD.closeBD();
+
+        File fichero = new File(System.getProperty("user.dir") + usuarioTabla.getFoto());
+        if (fichero.delete()) {
+            System.out.println("El fichero ha sido borrado satisfactoriamente");
+        } else {
+            System.out.println("El fichero no puede ser borrado");
+        }
+        //actualizamos los campos de la tabla
+        cargarTabla();
+
+        limpiar();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAniadir;

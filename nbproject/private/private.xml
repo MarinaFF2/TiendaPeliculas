@@ -4,8 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/ff_ma/Desktop/2DAM/DI/TiendaPelis/src/vistas/admin/GestionarPeliculas.java</file>
-            <file>file:/C:/Users/ff_ma/Desktop/2DAM/DI/TiendaPelis/src/modulos/TablaGestionPeliculasModel.java</file>
-            <file>file:/C:/Users/ff_ma/Desktop/2DAM/DI/TiendaPelis/src/datos/ConectorBD.java</file>
+            <file>file:/C:/Users/ff_ma/Desktop/2DAM/DI/TiendaPelis/src/modulos/Peliculas.java</file>
+            <file>file:/C:/Users/ff_ma/Desktop/2DAM/DI/TiendaPelis/src/vistas/Loggin.java</file>
+            <file>file:/C:/Users/ff_ma/Desktop/2DAM/DI/TiendaPelis/src/vistas/JDialogRegistrarse.java</file>
+            <file>file:/C:/Users/ff_ma/Desktop/2DAM/DI/TiendaPelis/src/vistas/admin/PerfilAdmin.java</file>
+            <file>file:/C:/Users/ff_ma/Desktop/2DAM/DI/TiendaPelis/src/vistas/user/PerfilUser.java</file>
+            <file>file:/C:/Users/ff_ma/Desktop/2DAM/DI/TiendaPelis/src/vistas/user/VisualizarPeliculas.java</file>
         </group>
     </open-files>
 </project-private>

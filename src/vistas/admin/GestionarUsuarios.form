@@ -43,7 +43,7 @@
             <Property name="text" type="java.lang.String" value="Pefil"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuPerfilActionPerformed"/>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="jMenuPerfilMenuSelected"/>
           </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuGestionar">
@@ -124,7 +124,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane1" alignment="0" pref="535" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
               <Component id="jSeparator1" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
@@ -148,9 +148,6 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="jTable">
               <Properties>
-                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new TablaGestionUsuariosModel()" type="code"/>
-                </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -189,6 +186,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTableMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -217,7 +217,7 @@
                               <Component id="jLabelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelApellido" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="40" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jTextFieldCorreo" alignment="0" max="32767" attributes="0"/>
                               <Component id="jTextFieldNombre" alignment="0" max="32767" attributes="0"/>
@@ -237,8 +237,9 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabelFoto" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="134" max="-2" attributes="0"/>
-                          <Component id="jLabelFotoSeleccionada" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
+                          <Component id="jLabelFotoSeleccionada" min="-2" pref="155" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -295,11 +296,11 @@
                           </Group>
                           <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="jLabelFotoSeleccionada" alignment="1" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jButtonExaminar" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabelFoto" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jLabelFotoSeleccionada" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="jButtonFoto" alignment="1" min="-2" pref="191" max="-2" attributes="0"/>
@@ -325,9 +326,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldCorreo">
-          <Properties>
-            <Property name="editable" type="boolean" value="false"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelNombre">
           <Properties>

@@ -22,9 +22,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class JDialogRegistrarse extends javax.swing.JDialog {
 
-    private JFileChooser elegirRuta;
-    private int seleccion = 0;
-    private File foto = null;
+    private File foto;
 
     /**
      * Creates new form JDialogRegistrarse
@@ -60,7 +58,6 @@ public class JDialogRegistrarse extends javax.swing.JDialog {
         jButtonRegistrarse = new javax.swing.JButton();
         jButtonFotoUsuario = new javax.swing.JButton();
         jLabelFotoSeleccionada = new javax.swing.JLabel();
-        jButtonVolver = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -195,7 +192,7 @@ public class JDialogRegistrarse extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
@@ -226,18 +223,6 @@ public class JDialogRegistrarse extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         jPanel1.add(jLabelFotoSeleccionada, gridBagConstraints);
 
-        jButtonVolver.setText("Volver");
-        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonVolverActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        jPanel1.add(jButtonVolver, gridBagConstraints);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -260,16 +245,12 @@ public class JDialogRegistrarse extends javax.swing.JDialog {
         examinarFoto();
     }//GEN-LAST:event_jButtonFotoExaminarActionPerformed
 
-    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
-     
-    }//GEN-LAST:event_jButtonVolverActionPerformed
-
     private void jButtonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarseActionPerformed
         if (jTextFieldNombre.getText().length() != 0 && jTextFieldApellidos.getText().length() != 0 && jTextFieldCorreo.getText().length() != 0 && jPasswordFieldPwd.getText().length() != 0) {
             if (jTextFieldCorreo.getText().contains("@") && jTextFieldCorreo.getText().contains(".")) {
-                this.registarse();
+                registarse();
             } else {
-                JOptionPane.showMessageDialog(null, "Error en el campo usuario, hay que introducir un correo", "Error al introducir el correo", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Error en el campo correo, hay que introducir un correo", "Error al introducir el correo", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Error algún campo está vacío", "Error de campo vacío", JOptionPane.ERROR_MESSAGE);
@@ -277,7 +258,6 @@ public class JDialogRegistrarse extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonRegistrarseActionPerformed
 
     private void jTextFieldApellidosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextFieldApellidosFocusLost
-
         if (jTextFieldApellidos.getText().length() == 0) {
             jTextFieldApellidos.setBackground(Color.red);
             jTextFieldApellidos.setForeground(Color.white);
@@ -322,28 +302,23 @@ public class JDialogRegistrarse extends javax.swing.JDialog {
         //declaramos variables que vamos a necesitar
         ConectorBD conectBD = new ConectorBD();
         Usuarios u = new Usuarios();
-        String rutaFoto = null;
 
         //recogemos la informacion introducida
         u.setNombre(jTextFieldNombre.getText());
         u.setApellido(jTextFieldApellidos.getText());
         u.setCorreo(jTextFieldCorreo.getText());
         //contraseña codificada
-        String pwdmd5Hex = DigestUtils.md5Hex(jPasswordFieldPwd.getText());
-        u.setPwd(pwdmd5Hex);
-//        u.setPwd(jPasswordFieldPwd.getText());
+        u.setPwd(DigestUtils.md5Hex(jPasswordFieldPwd.getText()));
         u.setIdRol(0); //sin rol
         u.setActivo(0); //sin activar
 
         //ponemos la foto e insertamos el usuario
         if (foto != null) {
-            u.setFoto(u.ponerFoto(foto, u.getCorreo()));
+            u.setFoto(u.ponerFoto(foto, u.getId_usuario() + ""));
 
             conectBD.openBD();
             conectBD.insertUsuarios(u);
             conectBD.closeBD();
-
-            JOptionPane.showMessageDialog(null, "El administrados te tiene que validar la cuenta para poder acceder", "Exito al crear usuario", JOptionPane.INFORMATION_MESSAGE);
         } else {
             foto = new File(System.getProperty("user.dir") + "/img/imgIconos/user.jpeg");
             u.setFoto(u.ponerFoto(foto, u.getCorreo()));
@@ -351,8 +326,6 @@ public class JDialogRegistrarse extends javax.swing.JDialog {
             conectBD.openBD();
             conectBD.insertUsuarios(u);
             conectBD.closeBD();
-
-            JOptionPane.showMessageDialog(null, "El administrados te tiene que validar la cuenta para poder acceder", "Exito al crear usuario", JOptionPane.INFORMATION_MESSAGE);
         }
 
         dispose();
@@ -360,12 +333,11 @@ public class JDialogRegistrarse extends javax.swing.JDialog {
 
     private void examinarFoto() {
         //Seleccionamos la foto
-        elegirRuta = new JFileChooser();
+        JFileChooser elegirRuta = new JFileChooser();
         elegirRuta.setDialogTitle("Selecciona la foto de perfil");
         elegirRuta.setFileFilter(new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif"));
         elegirRuta.setCurrentDirectory(new File(System.getProperty("user.dir") + "/Pictures"));
-        seleccion = elegirRuta.showOpenDialog(this);
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
+        if (elegirRuta.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             foto = elegirRuta.getSelectedFile();
             if (foto != null) {
                 ImageIcon icono = new ImageIcon(foto.getAbsolutePath());
@@ -378,7 +350,6 @@ public class JDialogRegistrarse extends javax.swing.JDialog {
     private javax.swing.JButton jButtonFotoExaminar;
     private javax.swing.JButton jButtonFotoUsuario;
     private javax.swing.JButton jButtonRegistrarse;
-    private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelApellido;
     private javax.swing.JLabel jLabelContrasenia;
