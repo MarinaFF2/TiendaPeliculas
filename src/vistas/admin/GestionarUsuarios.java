@@ -509,7 +509,6 @@ public class GestionarUsuarios extends javax.swing.JFrame {
     }
 
     private void modificar() {
-        System.out.println(usuarioTabla.getId_usuario() + ", " + usuarioTabla.getFoto() + " v " + foto);
 
         if (!jTextFieldNombre.getText().equals("") || !jTextFieldApellido.getText().equals("") || (Integer) jComboBoxRol.getSelectedIndex() != 0 || jCheckBoxActivo.isSelected() != false) {
             usuarioTabla.setCorreo(jTextFieldCorreo.getText());
@@ -526,6 +525,12 @@ public class GestionarUsuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Hay campos sin rellenar", "Al modificar usuario", JOptionPane.WARNING_MESSAGE);
         }
         if (foto != null) {
+            File fichero = new File(System.getProperty("user.dir") + usuarioTabla.getFoto());
+            if (fichero.delete()) {
+                System.out.println("El fichero ha sido borrado satisfactoriamente");
+            } else {
+                System.out.println("El fichero no puede ser borrado");
+            }
             usuarioTabla.setFoto(usuarioTabla.ponerFoto(foto, usuarioTabla.getId_usuario() + ""));
             conectBD.openBD();
             conectBD.updateFotoUsuario(usuarioTabla.getCorreo(), usuarioTabla.getFoto());

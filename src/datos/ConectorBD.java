@@ -111,14 +111,11 @@ public class ConectorBD {
             //execute the sentence, obtaining a relset
             ResultSet resul = st.executeQuery(sql);
             //process the resulset with the methos resul.next()
-//            if (resul.next() == false) {
-//                JOptionPane.showMessageDialog(null, "No hay películas", "No se encuentra", JOptionPane.INFORMATION_MESSAGE);
-//            } else {
+
             while (resul.next()) {
                 pelis = new Peliculas(resul.getInt(1), resul.getString(2), resul.getString(3), resul.getInt(4), resul.getString(5), resul.getString(6), resul.getString(7), resul.getString(8), resul.getDouble(9));
                 listaPelis.add(pelis);
             }
-//            }
 
             resul.close();
             st.close();
@@ -316,8 +313,7 @@ public class ConectorBD {
             Scanner sc = new Scanner(new FileReader(filename));
             while (sc.hasNext()) {
                 linea = sc.nextLine();
-                datos = linea.split(";");
-                
+                datos = linea.split(";");                
             }
             sc.close();
             System.out.println("Realizado con exitio");

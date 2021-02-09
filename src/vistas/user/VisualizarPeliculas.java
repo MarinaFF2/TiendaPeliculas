@@ -304,9 +304,9 @@ public class VisualizarPeliculas extends javax.swing.JFrame {
     private void jMenuPerfilMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPerfilMenuSelected
         dispose();
 
-        VisualizarPeliculas vp = new VisualizarPeliculas(usuarios);
-        vp.setLocationRelativeTo(null);
-        vp.setVisible(true);
+        PerfilUser pu = new PerfilUser(usuarios);
+        pu.setLocationRelativeTo(null);
+        pu.setVisible(true);
     }//GEN-LAST:event_jMenuPerfilMenuSelected
 
     private void jMenuPeliculasMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuPeliculasMenuSelected
