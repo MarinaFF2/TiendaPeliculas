@@ -522,10 +522,6 @@ public class GestionarUsuarios extends javax.swing.JFrame {
             conectBD.updateUsuario(usuarioTabla);
             conectBD.closeBD();
 
-            //actualizamos los campos de la tabla
-            cargarTabla();
-
-            limpiar();
         } else {
             JOptionPane.showMessageDialog(null, "Hay campos sin rellenar", "Al modificar usuario", JOptionPane.WARNING_MESSAGE);
         }
@@ -535,6 +531,11 @@ public class GestionarUsuarios extends javax.swing.JFrame {
             conectBD.updateFotoUsuario(usuarioTabla.getCorreo(), usuarioTabla.getFoto());
             conectBD.closeBD();
         }
+
+        //actualizamos los campos de la tabla
+        cargarTabla();
+
+        limpiar();
     }
 
     private void aniadir() {
@@ -549,9 +550,6 @@ public class GestionarUsuarios extends javax.swing.JFrame {
 
                 if (foto != null) {
                     usuarioTabla.setFoto(usuarioTabla.ponerFoto(foto, usuarioTabla.getId_usuario() + ""));
-                    conectBD.openBD();
-                    conectBD.updateFotoUsuario(usuarioTabla.getCorreo(), usuarioTabla.getFoto());
-                    conectBD.closeBD();
                 }
 
                 conectBD.openBD();
